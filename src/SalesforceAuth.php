@@ -114,6 +114,7 @@ class SalesforceAuth {
 		}
 
 		$member->logIn();
+		$member->extend('onSalesforceIdentify', $id);
 
 		$response = new SS_HTTPResponse();
 		$response->redirect('Security/login');

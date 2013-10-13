@@ -1,3 +1,10 @@
+Name: extensions
+---
+Member:
+  extensions:
+    - 'SalesforceAuthMemberExtension'
+
+---
 Name: routes
 After:
   - '#coreroutes'
