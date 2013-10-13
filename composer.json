@@ -1,0 +1,19 @@
+{
+	"name": "ajshort/silverstripe-salesforce-auth",
+	"description": "Provides authentication using the Salesforce OAuth API",
+	"type": "silverstripe-module",
+	"keywords": ["silverstripe", "salesforce", "authentication"],
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Andrew Short",
+			"email": "andrew@silverstripe.com.au"
+		}
+	],
+	"require": {
+		"silverstripe/framework": "~3.1"
+	},
+	"extra": {
+		"installer-name": "salesforce-auth",
+	}
+}
