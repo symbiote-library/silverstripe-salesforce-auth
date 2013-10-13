@@ -19,9 +19,10 @@ class SalesforceAuthController extends Controller {
 
 	public function callback() {
 		$code = $this->request->getVar('code');
+		$state = $this->request->getVar('state');
 
 		try {
-			$this->salesforce->callback($code);
+			$this->salesforce->callback($code, $state);
 		} catch(SalesforceAuthException $e) {
 			Session::set('FormInfo.SalesforceLoginForm_LoginForm.formError', array(
 				'message' => $e->getMessage(),

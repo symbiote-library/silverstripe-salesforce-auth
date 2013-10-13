@@ -5,8 +5,16 @@
 class SalesforceLoginForm extends LoginForm {
 
 	public function __construct($controller, $name) {
+		if(isset($_REQUEST['BackURL'])) {
+			$backURL = $_REQUEST['BackURL'];
+		} else {
+			$backURL = Session::get('BackURL');
+		}
+
 		$fields = new FieldList(array(
-			new HiddenField('AuthenticationMethod', null, 'SalesforceAuthenticator')
+			new CheckboxField('Remember', _t('SalesforceAuth.REMEMBER_LOGIN', 'Remember login details?')),
+			new HiddenField('AuthenticationMethod', null, 'SalesforceAuthenticator'),
+			new HiddenField('BackURL', null, $backURL)
 		));
 
 		$actions = new FieldList(array(

@@ -9,10 +9,9 @@ class SalesforceAuthenticator extends Authenticator {
 	}
 
 	public static function authenticate($data, Form $form = null) {
-		$response = new SS_HTTPResponse();
-		$response->redirect(Injector::inst()->get('SalesforceAuth')->getAuthURL());
-
-		return $response;
+		return Injector::inst()->get('SalesforceAuth')->authenticate(
+			$data['BackURL'], !empty($data['Remember'])
+		);
 	}
 
 	public static function get_login_form(Controller $controller) {

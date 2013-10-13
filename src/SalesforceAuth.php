@@ -38,12 +38,13 @@ class SalesforceAuth {
 	 *
 	 * @return string
 	 */
-	public function getAuthURL() {
+	public function getAuthURL($state = null) {
 		return Controller::join_links(self::AUTH_URL, '?' . http_build_query(array(
 			'response_type' => 'code',
 			'client_id' => $this->getClientID(),
 			'redirect_uri' => $this->getRedirectURL(),
-			'scope' => 'id'
+			'scope' => 'id',
+			'state' => json_encode($state)
 		)));
 	}
 
@@ -61,11 +62,16 @@ class SalesforceAuth {
 	/**
 	 * Returns a response to start an authentication response.
 	 *
+	 * @param string $redirect The URL to redirect to.
+	 * @param bool $remember Whether to remember the user's login.
 	 * @return SS_HTTPResponse
 	 */
-	public function authenticate() {
+	public function authenticate($redirect, $remember = false) {
 		$response = new SS_HTTPResponse();
-		$response->redirect($this->getAuthURL());
+		$response->redirect($this->getAuthURL(array(
+			'redirect' => $redirect,
+			'remember' => $remember
+		)));
 
 		return $response;
 	}
@@ -75,10 +81,11 @@ class SalesforceAuth {
 	 * provided authorisation code.
 	 *
 	 * @param string $code
+	 * @param string $state
 	 * @return SS_HTTPResponse
 	 * @throws SalesforceAuthException On authentication failure.
 	 */
-	public function callback($code) {
+	public function callback($code, $state) {
 		$callback = new RestfulService(self::CALLBACK_URL, -1);
 		$callback = $callback->request('', 'POST', array(
 			'code' => $code,
@@ -105,6 +112,7 @@ class SalesforceAuth {
 			);
 		}
 
+		/** @var Member $member */
 		$member = Member::get()->filter('Email', $id->email)->first();
 
 		if(!$member) {
@@ -113,13 +121,23 @@ class SalesforceAuth {
 			));
 		}
 
-		$member->logIn();
+		$state = json_decode($state);
+		$redirect = isset($state->redirect) ? $state->redirect : null;
+
+		$member->logIn(!empty($state->remember));
 		$member->extend('onSalesforceIdentify', $id);
 
 		$response = new SS_HTTPResponse();
-		$response->redirect('Security/login');
 
-		return $response;
+		if($redirect && Director::is_site_url($redirect)) {
+			return $response->redirect($redirect);
+		}
+
+		if($redirect = Config::inst()->get('Security', 'default_login_dest')) {
+			return $response->redirect($redirect);
+		}
+
+		return $response->redirect(Director::absoluteBaseURL());
 	}
 
 }
