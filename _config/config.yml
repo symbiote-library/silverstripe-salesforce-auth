@@ -1,0 +1,8 @@
+Name: routes
+After:
+  - '#coreroutes'
+  - '#modelascontrollerroutes'
+---
+Director:
+  rules:
+    'salesforce-auth': 'SalesforceAuthController'
