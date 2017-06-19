@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe-australia/salesforce-auth",
+	"name": "symbiote-library/silverstripe-salesforce-auth",
 	"description": "Provides authentication using the Salesforce OAuth API",
 	"type": "silverstripe-module",
 	"keywords": ["silverstripe", "salesforce", "authentication"],
@@ -18,7 +18,10 @@
 		"silverstripe/framework": "~3.1"
 	},
 	"extra": {
-		"installer-name": "salesforce-auth"
+		"installer-name": "salesforce-auth",
+		"branch-alias": {
+			"dev-master": "1.0.x-dev"
+		}
 	},
 	"replace": {
 		"ajshort/silverstripe-salesforce-auth": "self.version"
