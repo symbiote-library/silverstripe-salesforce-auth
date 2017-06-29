@@ -24,6 +24,7 @@
 		}
 	},
 	"replace": {
-		"ajshort/silverstripe-salesforce-auth": "self.version"
+		"ajshort/silverstripe-salesforce-auth": "self.version",
+		"silverstripe-australia/salesforce-auth": "self.version"
 	}
 }
